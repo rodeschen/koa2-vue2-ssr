@@ -1,8 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
 import MFS from 'memory-fs';
-import clientConfig from './webpack.client.config';
-import serverConfig from './webpack.server.config';
+import clientConfig from './webpack.client.config.babel';
+import serverConfig from './webpack.server.config.babel';
 import { devMiddleware, hotMiddleware } from 'koa-webpack-middleware';
 const readFile = (fs, file) => {
     try {

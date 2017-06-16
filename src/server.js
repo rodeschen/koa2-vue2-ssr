@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { app, router } from './koaServer';
 import LRU from 'lru-cache';
+import send from 'koa-send';
 //import koaRouter from 'koa-router';
 
 //routers
@@ -12,9 +13,35 @@ const resolve = file => path.resolve(__dirname, file);
 const isProd = process.env.NODE_ENV === 'production';
 const useMicroCache = process.env.MICRO_CACHE !== 'false';
 
-//const app = new koa();
-//const router = koaRouter();
+function serveFile(url, fileName, maxAge = (1000 * 60 * 60 * 24)) {
+    return async function(ctx, next) {
+        if (ctx.url === url) {
+            await send(ctx, fileName, {
+                maxAge: maxAge
+            });
+        } else {
+            await next();
+        }
+    };
+}
 
+function servePath(oldPath, path, maxAge = (1000 * 60 * 60 * 24)) {
+    return async function(ctx, next) {
+        if (ctx.url.indexOf(oldPath) == 0) {
+            console.log(ctx.url.replace(oldPath, ''), path)
+            await send(ctx, ctx.url.replace(oldPath, ''), {
+                maxAge: maxAge,
+                root: path
+            });
+        } else {
+            await next();
+        }
+    };
+}
+
+app.use(serveFile('/service-worker.js', './dist/service-worker.js'));
+app.use(servePath('/dist', './dist'));
+app.use(servePath('/public', './public'));
 
 app.use(async(ctx, next) => {
     const start = new Date();
