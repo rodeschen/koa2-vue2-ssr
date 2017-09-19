@@ -1,6 +1,8 @@
 <template>
-  <div>
-    {{renderer}} -- index page</div>
+<div>
+  <div>{{renderer}} -- index page</div>
+  <div class="test-css">test css</div>
+  </div>
 </template>
 
 <script>
@@ -26,6 +28,6 @@ export default {
 }
 </script>
 
-<style >
+<style>
 
 </style>

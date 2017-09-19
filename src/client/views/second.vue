@@ -1,5 +1,8 @@
 <template>
+<div>
   <div class="second">{{renderer}} -- second</div>
+  <div class="test-css">test css</div>
+  </div>
 </template>
 
 <script>
@@ -26,8 +29,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .second {
     color: peru;
+  }
+  .test-css{
+    color:darkred;
   }
 </style>
