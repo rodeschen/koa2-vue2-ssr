@@ -38,14 +38,13 @@ export default {
                     limit: 10000,
                     name: '[name].[ext]?[hash]'
                 }
-            },
-            {
-                test: /\.css$/,
+            }, {
+                test: /\.[s]?[ac]ss$/,
                 use: isProd ?
                     ExtractTextPlugin.extract({
                         use: 'css-loader?minimize',
                         fallback: 'vue-style-loader'
-                    }) : ['vue-style-loader', 'css-loader']
+                    }) : ['vue-style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },

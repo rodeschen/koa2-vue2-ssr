@@ -3,9 +3,15 @@ import path from 'path';
 import { app, router } from './koaServer';
 import LRU from 'lru-cache';
 import send from 'koa-send';
+import config from 'config';
+// import convert from 'koa-convert';
+import koaBodyparser from 'koa-bodyparser';
 //import koaRouter from 'koa-router';
 
+//middlewares
+import authChecker from './middlewares/authChecker';
 //routers
+import auth from './routers/auth';
 import ssr from './routers/ssr';
 
 
@@ -39,10 +45,12 @@ function servePath(oldPath, path, maxAge = (1000 * 60 * 60 * 24)) {
     };
 }
 
+app.use(koaBodyparser());
+
 app.use(serveFile('/service-worker.js', './dist/service-worker.js'));
 app.use(servePath('/dist', './dist'));
 app.use(servePath('/public', './public'));
-
+app.use(authChecker());
 app.use(async(ctx, next) => {
     const start = new Date();
     await next();
@@ -51,7 +59,7 @@ app.use(async(ctx, next) => {
 });
 
 
-
+router.use('/auth', auth.routes(), auth.allowedMethods());
 router.use('*', ssr.routes(), ssr.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
 

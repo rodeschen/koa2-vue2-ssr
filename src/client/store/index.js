@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import actions from './actions'
-// import mutations from './mutations'
-// import getters from './getters'
-
-Vue.use(Vuex)
-
+import user from './user';
+Vue.use(Vuex);
 export function createStore() {
     return new Vuex.Store({
+        modules: { user },
         state: {
             renderer: "??",
             testData: "testData1"

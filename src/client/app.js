@@ -3,6 +3,7 @@ import App from './App.vue'
 import { createStore } from './store'
 import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
+import VeeValidate from 'vee-validate';
 //import titleMixin from './util/title'
 //import * as filters from './util/filters'
 
@@ -14,6 +15,11 @@ import { sync } from 'vuex-router-sync'
 //   Vue.filter(key, filters[key])
 // })
 
+const config = {
+    classes: true
+};
+
+Vue.use(VeeValidate, config);
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
 export function createApp() {

@@ -4,7 +4,7 @@ import { app } from '../koaServer';
 import koaRouter from 'koa-router';
 import LRU from 'lru-cache';
 import { createBundleRenderer } from 'vue-server-renderer';
-
+import auth from '../services/securityServ';
 const isProd = process.env.NODE_ENV === 'production';
 const useMicroCache = process.env.MICRO_CACHE !== 'false';
 const router = koaRouter();
@@ -71,8 +71,9 @@ function createRenderer(bundle, options) {
 
 router.get('/', async function(ctx, next) {
     ctx.set("Content-Type", "text/html");
-    var reslove, reject;
-    var promise = new Promise((r, rj) => {
+    let reslove, reject;
+    let userData;
+    let promise = new Promise((r, rj) => {
         reslove = r;
         reject = rj;
     });
@@ -87,17 +88,18 @@ router.get('/', async function(ctx, next) {
             reslove(hit);
         }
     }
-
+    let token = ctx.cookies.get("token");
+    userData = token ? await auth.validRedisJWT(token) : '';
     const context = {
-        title: 'Vue HN 2.0', // default title
-        url: ctx.url
+        title: 'Vue 2.0 SSR and KOA2', // default title
+        url: ctx.url,
+        userData
     }
     renderer.renderToString(context, (err, html) => {
         if (err) {
             reject(err)
         }
         if (cacheable) {
-            console.log("set cache", ctx.url, html);
             microCache.set(ctx.url, html)
         }
         reslove(html);
@@ -118,6 +120,13 @@ router.get('/', async function(ctx, next) {
             console.error(err.stack)
         }
     });
+});
+
+router.post('/', async function(ctx, next) {
+    ctx.set("Content-Type", "text/html");
+    ctx.status = 404;
+    ctx.body = '404 ';
+    console.error(`error during render : ${ctx.url}`)
 });
 
 export default router;

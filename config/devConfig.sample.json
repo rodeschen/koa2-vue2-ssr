@@ -1,0 +1,52 @@
+{
+    "dbconfig": {
+        "host": "localhost",
+        "dbName": "test",
+        "dialect": "postgres",
+        "userName": "",
+        "password": "",
+        "pool": {
+            "max": 5,
+            "min": 0,
+            "idle": 10000
+        }
+    },
+    "redis": {
+        "host": "localhost",
+        "port": "6379",
+        "pool": {
+            "max": 5,
+            "min": 0,
+            "idle": 10000
+        }
+    },
+    "jwt": {
+        "secertKeyType": "string",
+        "secertKey": "1234567890",
+        "expiresIn": 360000, // 60 * 60 * 100
+        "defaultOptions": {}
+    },
+    "grant": {
+        "server": {
+            "protocol": "http",
+            "host": "localhost:3000"
+        },
+        "facebook": {
+            "key": "",
+            "secret": "",
+            "callback": "/auth/facebook_callback",
+            "scope": [
+                "email",
+                "user_likes"
+            ]
+        },
+        "google": {
+            "key": "",
+            "secret": "",
+            "callback": "/auth/google_callback",
+            "scope": [
+                "email"
+            ]
+        }
+    }
+}

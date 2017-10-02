@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import indexComp from './views/index.vue'
 import secondComp from './views/second.vue'
+import loginComp from './views/login.vue'
 Vue.use(Router)
 
 // route-level code splitting
@@ -22,6 +23,7 @@ export function createRouter() {
             //   { path: '/item/:id(\\d+)', component: ItemView },
             //   { path: '/user/:id', component: UserView },
             { path: '/second', component: secondComp },
+            { path: '/login', component: loginComp },
             { path: '/', component: indexComp }
         ]
     })
